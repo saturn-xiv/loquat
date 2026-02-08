@@ -1,0 +1,142 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.github.saturn_xiv.palm.plugins.router.v1";
+option java_outer_classname = "RouterProto";
+option go_package = "./;v2";
+option csharp_namespace = "Palm.Plugins.Router.Grpc";
+package palm.router.v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+message Router {
+  map<string,Internet>      wan        = 1;
+  optional IntranetBond     lan        = 2;
+  optional IntranetBond     dmz        = 3;
+  repeated FirewallRule     rules      = 9;
+  google.protobuf.Timestamp created_at = 98;
+  string                    version    = 99;
+}
+
+message IntranetBond {
+  // https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/7/html/networking_guide/overview-of-bonding-modes-and-the-required-settings-on-the-switch
+  enum Mode{
+    // 6 Requires autonomous ports
+    BALANCE_ALB = 0;
+    // 2 Requires static Etherchannel enabled (not LACP-negotiated)
+    BALANCE_XOR = 1;
+  }
+  repeated string interfaces           = 1;
+  Intranet        network              = 2;
+  uint32          mii_monitor_interval = 3;
+  Mode            mode                 = 4;
+}
+
+message Internet {
+  message Static {
+    string          address = 1;
+    string          netmask = 2;
+    string          gateway = 3;
+    repeated string dns     = 9;
+  }
+  message Pppoe {
+    string account  = 1;
+    string password = 2;
+  }
+
+  string label = 1;
+  string isp   = 2;
+  oneof ip {
+    google.protobuf.Empty dhcp   = 11;
+    Static                static = 12;
+    Pppoe                 pppoe  = 13;
+  }
+  uint32 priority = 21;
+  uint32 weight   = 22;
+  string memo     = 99;
+}
+
+message Intranet {
+  message Google {}
+  message Ali {}
+  message Other {
+    repeated string addresses = 1;
+  }
+  message Host {
+    string                    mac        = 1;
+    string                    ip         = 2;
+    string                    name       = 3;
+    google.protobuf.Timestamp updated_at = 99;
+  }
+  string address = 1;
+  oneof dns {
+    Ali    ali    = 2;
+    Google google = 3;
+    Other  other  = 4;
+  }
+  repeated Host hosts = 99;
+}
+
+message FirewallRule {
+  message Ping {
+    string device = 1;
+  }
+  enum Protocol {
+    TCP = 0;
+    UDP = 1;
+  }
+  enum Week {
+    SUN = 0;
+    MON = 1;
+    TUE = 2;
+    WED = 3;
+    THU = 4;
+    FRI = 5;
+    SAT = 6;
+  }
+  message Time {
+    uint32 hour   = 1;
+    uint32 minute = 2;
+  }
+  message Period {
+    repeated Week days  = 1;
+    Time          begin = 2;
+    Time          end   = 3;
+  }
+  message Nat {
+    message Destination {
+      string ip   = 1;
+      uint32 port = 2;
+    }
+    string      device      = 1;
+    Protocol    protocol    = 2;
+    uint32      port        = 3;
+    Destination destination = 4;
+  }
+  message Input {
+    string   device   = 1;
+    Protocol protocol = 2;
+    uint32   port     = 3;
+  }
+  message Output {
+    string          address = 1;
+    Period          period  = 8;
+    repeated string hosts   = 9;
+  }
+  message SpeedLimit {
+    uint32          value  = 1;
+    Period          period = 8;
+    repeated string hosts  = 9;
+  }
+  oneof by {
+    Ping       ping        = 1;
+    Input      input       = 2;
+    Nat        nat         = 3;
+    Output     output      = 4;
+    SpeedLimit speed_limit = 5;
+  }
+  int32                     sort_order = 97;
+  string                    memo       = 98;
+  google.protobuf.Timestamp updated_at = 99;
+}

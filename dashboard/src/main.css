@@ -1,0 +1,15 @@
+@import "bulma/css/bulma.css";
+
+@import "@graphiql/react/style.css";
+@import "@graphiql/react/font/roboto.css";
+@import "@graphiql/react/font/fira-code.css";
+
+body {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.pre-scrollable {
+  max-height: 340px;
+  overflow-y: scroll;
+}

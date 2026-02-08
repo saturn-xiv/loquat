@@ -1,0 +1,15 @@
+[Unit]
+Description=http server(loquat).
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/loquat -c /etc/loquat/config.toml http -p 8080
+WorkingDirectory=/var/lib/loquat
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

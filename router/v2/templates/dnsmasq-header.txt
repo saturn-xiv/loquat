@@ -1,0 +1,5 @@
+# https://thekelleys.org.uk/dnsmasq/docs/dnsmasq-man.html
+
+systemctl stop dnsmasq
+systemctl disable dnsmasq
+rm -f /etc/systemd/system/dnsmasq-*.service

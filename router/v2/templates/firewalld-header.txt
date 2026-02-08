@@ -1,0 +1,53 @@
+# https://firewalld.org/documentation/howto/enable-and-disable-firewalld.html
+echo 'enable ipv4 forward'
+cat >/etc/sysctl.d/100-router.conf <<EOF
+net.ipv4.ip_forward = 1
+
+net.ipv4.fib_multipath_hash_policy = 1
+net.ipv4.fib_multipath_use_neigh = 1
+
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+net.ipv6.conf.lo.disable_ipv6 = 1
+EOF
+systemctl restart systemd-sysctl
+
+nft flush ruleset
+systemctl enable firewalld.service
+systemctl restart firewalld
+
+if [ -d /etc/firewalld/zones ]
+then
+    rm -r /etc/firewalld/zones
+fi
+
+mkdir -p /etc/firewalld/zones
+if [ -f /etc/firewalld/direct.xml ]
+then
+    rm /etc/firewalld/direct.xml
+fi
+
+if [ -d /etc/firewalld/policies ]
+then
+    rm -r /etc/firewalld/policies
+fi
+mkdir -p /etc/firewalld/policies
+
+firewall-cmd --complete-reload
+
+# firewall-cmd --get-active-zones
+# firewall-cmd --list-all-zones
+# firewall-cmd --zone=external --list-interfaces
+# firewall-cmd --zone=external --query-masquerade
+# firewall-cmd --permanent --zone=external --add-masquerade
+
+
+firewall-cmd --permanent --new-policy=internal2external
+firewall-cmd --permanent --policy=internal2external --add-ingress-zone=internal
+firewall-cmd --permanent --policy=internal2external --add-egress-zone=external
+firewall-cmd --permanent --policy=internal2external --set-target=ACCEPT
+
+firewall-cmd --permanent --new-policy=dmz2external
+firewall-cmd --permanent --policy=dmz2external --add-ingress-zone=dmz
+firewall-cmd --permanent --policy=dmz2external --add-egress-zone=external
+firewall-cmd --permanent --policy=dmz2external --set-target=ACCEPT

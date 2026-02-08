@@ -1,0 +1,14 @@
+[Unit]
+Description=scan lan hosts(loquat).
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+ExecStart=/usr/bin/loquat -c /etc/loquat/config.toml net-scan
+WorkingDirectory=/var/lib/loquat
+
+[Install]
+WantedBy=multi-user.target

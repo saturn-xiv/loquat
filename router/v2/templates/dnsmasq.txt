@@ -1,0 +1,49 @@
+
+cat >/etc/systemd/system/dnsmasq-{{ .device }}.service <<EOF
+[Unit]
+Description=dnsmasq - A lightweight DHCP and caching DNS server({{ .device }})
+Documentation=man:dnsmasq(8)
+After=network.target
+Before=network-online.target nss-lookup.target
+Wants=nss-lookup.target
+
+[Service]
+Type=simple
+ExecStartPre=/usr/sbin/dnsmasq --test -C /etc/dnsmasq-{{ .device }}.conf
+ExecStart=/usr/sbin/dnsmasq -k --user=dnsmasq -C /etc/dnsmasq-{{ .device }}.conf -x /tmp/dnsmasq.{{ .device }}.pid
+Restart=on-failure
+PrivateDevices=true
+ProtectSystem=full
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+cat >/etc/dnsmasq-{{ .device }}.conf <<EOF
+interface={{ .device }}
+except-interface=lo
+bind-interfaces
+listen-address={{ .gateway }}
+
+no-resolv
+{{ range .dns }}
+server={{ . }}
+{{ end }}
+clear-on-reload
+
+dhcp-range={{ .begin }},{{ .end }},1d
+dhcp-option=option:dns-server,{{ .gateway }}
+dhcp-option=option:ntp-server,{{ .gateway }}
+dhcp-option=option:router,{{ .gateway }}
+dhcp-authoritative
+
+{{ range .hosts }}
+dhcp-host={{ .mac }},{{.name}},{{.ip}}
+{{ end }}
+EOF
+
+/usr/sbin/dnsmasq --test -C /etc/dnsmasq-{{ .device }}.conf
+
+systemctl daemon-reload
+systemctl enable dnsmasq-{{ .device }}.service
+systemctl restart dnsmasq-{{ .device }}.service

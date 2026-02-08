@@ -1,0 +1,334 @@
+scalar Time
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  version: String!
+  refresh: RefreshResponse!
+  status: StatusResponse!
+
+  indexLog(page: Page!): IndexLogResponse!
+
+  indexHost: [Host!]!
+  showHost(id: ID!): Host!
+
+  addresses(ip: String!): [String!]!
+  interfaces: InterfacesResponse!
+
+  indexMember: [Member!]!
+  showMember(id: ID!): Member!
+
+  indexNetworkInterface: [NetworkInterface!]!
+  showNetworkInterface(name: String!): NetworkInterface!
+  getNetworkInterface(name: String!): NetworkInterfaceProfile!
+
+  indexFirewallRule: [FirewallRule!]!
+
+  intranetBond(name: String!): IntranetBond!
+}
+
+type Mutation {
+  updateProfile(current: Account!, new: Account!): Ok!
+  signIn(account: Account!, ttl: Int!): SignInResponse!
+  signOut: Ok!
+
+  createMember(sn: String!, name: String!, memo: String!): Ok!
+  updateMember(id: ID!, name: String!, memo: String!): Ok!
+  setMemberWifiPassword(id: ID!, password: String!): Ok!
+  disableMember(id: ID!): Ok!
+  enableMember(id: ID!): Ok!
+
+  associateHostWithMember(host: ID!, member: ID!): Ok!
+  setHostName(id: ID!, name: String!): Ok!
+  blockHost(id: ID!): Ok!
+  releaseHost(id: ID!): Ok!
+  setHostStaticIp(id: ID!, name: String!, ip: String!): Ok!
+  setHostDynamicIp(id: ID!): Ok!
+
+  setNetworkInterfacePublicDhcp(
+    name: String!
+    label: String!
+    isp: Isp!
+    memo: String!
+    priority: Int!
+  ): Ok!
+  setNetworkInterfacePublicStaticIp(
+    name: String!
+    label: String!
+    isp: Isp!
+    address: String!
+    netmask: String!
+    gateway: String!
+    dns: [String!]!
+    memo: String!
+    priority: Int!
+  ): Ok!
+  disableNetworkInterface(name: String!, label: String!): Ok!
+
+  intranetBond(
+    name: String!
+    interfaces: [String!]!
+    address: String!
+    dns: Dns!
+    mode: BondMode!
+    enable: Boolean!
+  ): Ok!
+
+  allowPing(id: ID, device: String!, sortOrder: Int!, memo: String!): Ok!
+  allowInput(
+    id: ID
+    device: String!
+    tcp: Boolean!
+    port: Int!
+    sortOrder: Int!
+    memo: String!
+  ): Ok!
+  allowNat(
+    id: ID
+    device: String!
+    tcp: Boolean!
+    port: Int!
+    destinationIp: String!
+    destinationPort: Int!
+    sortOrder: Int!
+    memo: String!
+  ): Ok!
+  denyOutput(
+    id: ID
+    address: String!
+    weekdays: [Week!]!
+    beginTime: String!
+    endTime: String!
+    sortOrder: Int!
+    memo: String!
+  ): Ok!
+  limitSpeed(
+    id: ID
+    value: Int!
+    weekdays: [Week!]!
+    beginTime: String!
+    endTime: String!
+    sortOrder: Int!
+    memo: String!
+  ): Ok!
+  disableFirewallRule(id: ID!): Ok!
+  enableFirewallRule(id: ID!): Ok!
+  associateRuleWithMember(rule: ID!, member: ID!): Ok!
+  dissociateRuleFromMember(rule: ID!, member: ID!): Ok!
+
+  apply(run: Boolean!): Ok!
+  reboot: Ok!
+}
+
+type StatusResponse {
+  diskSpace: String!
+  diskIndexNodes: String!
+  cpu: String!
+  memory: String!
+  top: String!
+  sar: String!
+  network: String!
+  hardware: String!
+  arp: String!
+  routes: String!
+  addresses: String!
+  tcp: String!
+  udp: String!
+  queueingDiscipline: String!
+  firewall: String!
+}
+type NetworkInterface {
+  name: String!
+  hardwareAddress: String!
+  addresses: [String!]!
+  multicastAddresses: [String!]!
+  mtu: Int!
+  label: String!
+  memo: String!
+}
+
+type StaticIp {
+  label: String!
+  memo: String!
+  isp: String!
+  address: String!
+  netmask: String!
+  gateway: String!
+  dns: [String!]!
+  priority: Int!
+  enable: Boolean!
+}
+type DynamicIp {
+  label: String!
+  memo: String!
+  isp: String!
+  priority: Int!
+  enable: Boolean!
+}
+union NetworkInterfaceProfile = StaticIp | DynamicIp
+
+type Ethernet {
+  name: String!
+  profile: NetworkInterfaceProfile
+}
+type InterfacesResponse {
+  dmz: IntranetBond
+  lan: IntranetBond
+  ethernets: [Ethernet!]!
+}
+
+enum Isp {
+  Unknown
+  ChinaMobile
+  ChinaTelecom
+}
+enum Week {
+  Sun
+  Mon
+  Tue
+  Wed
+  Thu
+  Fri
+  Sat
+}
+type Input {
+  id: ID!
+  device: String!
+  tcp: Boolean!
+  port: Int!
+  sortOrder: Int!
+  memo: String!
+  updatedAt: Time!
+  deletedAt: Time
+}
+type Nat {
+  id: ID!
+  device: String!
+  port: Int!
+  tcp: Boolean!
+  destinationIp: String!
+  destinationPort: Int!
+  sortOrder: Int!
+  memo: String!
+  updatedAt: Time!
+  deletedAt: Time
+}
+type Ping {
+  id: ID!
+  device: String!
+  sortOrder: Int!
+  memo: String!
+  updatedAt: Time!
+  deletedAt: Time
+}
+type Output {
+  address: String!
+  weekdays: [String!]!
+  beginTime: String!
+  endTime: String!
+  members: [Member!]!
+  updatedAt: Time!
+  deletedAt: Time
+}
+type SpeedLimit {
+  value: Int!
+  weekdays: [String!]!
+  beginTime: String!
+  endTime: String!
+  members: [Member!]!
+  updatedAt: Time!
+  deletedAt: Time
+}
+union FirewallRule = Input | Nat | Ping | Output | SpeedLimit
+
+enum Dns {
+  Google
+  Ali
+}
+enum BondMode {
+  BalanceXor
+  BalanceAlb
+}
+
+type IntranetBond {
+  interfaces: [String!]!
+  address: String!
+  enable: Boolean!
+  dns: String!
+  mode: String!
+}
+
+type Ok {
+  createdAt: Time!
+}
+
+type Member {
+  id: ID!
+  sn: String!
+  name: String!
+  memo: String!
+  updatedAt: Time!
+  deletedAt: Time
+}
+
+type Host {
+  id: ID!
+  name: String
+  vendor: String
+  mac: String!
+  ip: String!
+  network: String!
+  fixed: Boolean!
+  member: Member
+  updatedAt: Time!
+  deletedAt: Time
+}
+
+type SignInResponse {
+  username: String!
+  token: String!
+}
+type User {
+  id: ID!
+  name: String!
+}
+type Log {
+  id: ID!
+  user: User!
+  message: String!
+  ip: String!
+  createdAt: Time!
+}
+
+type IndexLogResponse {
+  items: [Log!]!
+  pagination: Pagination!
+}
+input Account {
+  name: String!
+  password: String!
+}
+input Page {
+  index: Int!
+  size: Int!
+}
+
+type Pagination {
+  index: Int!
+  size: Int!
+  hasPrevious: Boolean!
+  hasNext: Boolean!
+  pages: Int!
+  total: Int!
+}
+
+type RefreshResponse {
+  version: String!
+  hostname: String!
+  description: String!
+  createdAt: Time!
+  lastRunAt: Time
+}

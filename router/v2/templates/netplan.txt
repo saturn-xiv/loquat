@@ -1,0 +1,23 @@
+# https://netplan.readthedocs.io/en/stable/netplan-tutorial/
+
+if [ -d /etc/netplan ]
+then
+    rm -r /etc/netplan
+fi
+mkdir /etc/netplan
+
+{{ range $n, $p := .items }}
+# {{ $p.label }}
+cat >/etc/netplan/{{ $p.order }}-{{ $n }}.yaml <<EOF
+{{ $p.content }}
+EOF
+{{ end }}
+
+chmod 600 /etc/netplan/*.yaml
+netplan apply --debug
+
+systemctl daemon-reload
+systemctl restart systemd-networkd
+systemctl restart systemd-resolved
+systemctl restart systemd-timesyncd
+
