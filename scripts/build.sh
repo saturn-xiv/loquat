@@ -30,7 +30,7 @@ function build_go() {
     cd $WORKSPACE/
 
     local pkg="github.com/saturn-xiv/loquat/env"    
-    local ldflags="-a -extldflags '-static' -s -w -X '$pkg.build_time=$(date -u -R)' -X '$pkg.git_version=$(git describe --tags --always --dirty --first-parent)'"
+    local ldflags="-a -extldflags '-static' -s -w -X '$pkg.build_time=$(date -u -R)' -X '$pkg.git_version=$VERSION'"
     local target=$WORKSPACE/tmp/loquat-$VERSION-$1
     
     mkdir -p $target/usr/bin
