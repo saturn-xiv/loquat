@@ -1,8 +1,8 @@
 Package: loquat
-Version: 2026.1.21
+Version: 2026.2.8
 Maintainer: Jeremy Zheng
 Section: net
 Priority: optional
-Homepage: https://github.com/saturn-xiv/palm/tree/main/loquat
+Homepage: https://github.com/saturn-xiv/loquat
 Architecture: all
-Description: A smart router solution inspired by OpenWrt.
+Description: A smart router system based on Debian GNU/Linux.

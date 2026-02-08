@@ -41,13 +41,13 @@ function build_go() {
 function build_deb() {
     local package="loquat-${VERSION}_${1}.deb"
     echo "build $package"
-    local target=$WORKSPACE/tmp/$loquat-$VERSION_${1}
+    local target=$WORKSPACE/tmp/loquat-$VERSION-$1
     
     cd $WORKSPACE/
     mkdir -p $target/usr/share/loquat
     cp -r README.md scripts/debian.sh etc $target/usr/share/loquat/
     cp -r dashboard/dist $target/usr/share/loquat/dashboard
-    cp -r scripts/.debian $target/DEBIAN
+    cp -r .debian $target/DEBIAN
     mkdir -p $target/var/lib/$1
     chmod 400 $target/var/lib/$1
 
@@ -63,13 +63,6 @@ then
     echo "unsupported system $ID"
     exit 1
 fi
-
-if [ -d $TARGET ]
-then
-    rm -r $TARGET
-fi
-mkdir $TARGET
-
 
 build_dashboard loquat
 build_go amd64 x86_64

@@ -1,4 +1,4 @@
-# LOQUAT - A smart router system based on Debian GNU/Linux
+# LOQUAT - A smart router solution based on Debian GNU/Linux
 
 ## Testing
 

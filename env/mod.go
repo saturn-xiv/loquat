@@ -12,5 +12,5 @@ func Version() string {
 }
 
 func Description() string {
-	return "A smart router system based on Debian GNU/Linux."
+	return "A smart router solution based on Debian GNU/Linux."
 }
