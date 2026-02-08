@@ -10,8 +10,8 @@ import (
 	"google.golang.org/protobuf/proto"
 	"gorm.io/gorm"
 
-	"github.com/saturn-xiv/palm/loquat/models"
-	v2 "github.com/saturn-xiv/palm/loquat/router/v2"
+	"github.com/saturn-xiv/loquat/models"
+	v2 "github.com/saturn-xiv/loquat/router/v2"
 )
 
 func (p *Mutation) AllowPing(ctx context.Context, args struct {

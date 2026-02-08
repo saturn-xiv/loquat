@@ -6,7 +6,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 
-	"github.com/saturn-xiv/palm/loquat/graphql"
+	"github.com/saturn-xiv/loquat/graphql"
 )
 
 type SetAdministratorConfig struct {

@@ -11,7 +11,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"gorm.io/gorm"
 
-	"github.com/saturn-xiv/palm/loquat/models"
+	"github.com/saturn-xiv/loquat/models"
 )
 
 func (p *Mutation) SignIn(ctx context.Context, args struct {

@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"github.com/saturn-xiv/palm/loquat/models"
+	"github.com/saturn-xiv/loquat/models"
 )
 
 type PostgreSql struct {

@@ -13,8 +13,8 @@ import (
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
 
-	graphql "github.com/saturn-xiv/palm/loquat/graphql"
-	"github.com/saturn-xiv/palm/loquat/models"
+	graphql "github.com/saturn-xiv/loquat/graphql"
+	"github.com/saturn-xiv/loquat/models"
 )
 
 type HttpServerConfig struct {

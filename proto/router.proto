@@ -1,11 +1,11 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "com.github.saturn_xiv.palm.plugins.router.v1";
+option java_package = "com.github.saturn_xiv.loquat.router.v1";
 option java_outer_classname = "RouterProto";
 option go_package = "./;v2";
-option csharp_namespace = "Palm.Plugins.Router.Grpc";
-package palm.router.v1;
+option csharp_namespace = "Loquat.Router.Grpc";
+package loquat.router.v1;
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";

@@ -11,7 +11,7 @@ import (
 	graphql "github.com/graph-gophers/graphql-go"
 	"gorm.io/gorm"
 
-	"github.com/saturn-xiv/palm/loquat/models"
+	"github.com/saturn-xiv/loquat/models"
 )
 
 func (p *Mutation) CreateMember(ctx context.Context, args struct {

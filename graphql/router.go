@@ -9,8 +9,8 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/saturn-xiv/palm/loquat/models"
-	"github.com/saturn-xiv/palm/loquat/router"
+	"github.com/saturn-xiv/loquat/models"
+	"github.com/saturn-xiv/loquat/router"
 )
 
 func (p *Mutation) Apply(ctx context.Context, args struct{ Run bool }) (*Ok, error) {

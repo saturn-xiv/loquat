@@ -5,10 +5,11 @@ import (
 	"log/slog"
 
 	"github.com/BurntSushi/toml"
-	"github.com/saturn-xiv/palm/loquat/graphql"
-	"github.com/saturn-xiv/palm/loquat/models"
-	v2 "github.com/saturn-xiv/palm/loquat/router/v2"
 	"gorm.io/gorm"
+
+	"github.com/saturn-xiv/loquat/graphql"
+	"github.com/saturn-xiv/loquat/models"
+	v2 "github.com/saturn-xiv/loquat/router/v2"
 )
 
 type NetScanConfig struct {

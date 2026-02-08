@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/saturn-xiv/palm/loquat/app"
+	"github.com/saturn-xiv/loquat/app"
 )
 
 func main() {

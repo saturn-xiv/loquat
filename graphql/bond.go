@@ -7,7 +7,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/saturn-xiv/palm/loquat/models"
+	"github.com/saturn-xiv/loquat/models"
 )
 
 func (p *Mutation) IntranetBond(ctx context.Context, args struct {

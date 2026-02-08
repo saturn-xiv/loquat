@@ -5,7 +5,7 @@ import (
 
 	graphql "github.com/graph-gophers/graphql-go"
 
-	"github.com/saturn-xiv/palm/loquat/models"
+	"github.com/saturn-xiv/loquat/models"
 )
 
 func (p *Query) IndexLog(ctx context.Context, args struct {

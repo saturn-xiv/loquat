@@ -1,0 +1,10 @@
+# openssl rand -base64 32
+secret-key = "n6HcS4UWxFvIgGA6odgaoJEf7l/eJ8JxXAsqYK6PcpY="
+
+[postgresql]
+host = "127.0.0.1"
+port = 5432
+db-name = "loquat_dev"
+user = "www"
+password = "change-me"
+pool-size = 16

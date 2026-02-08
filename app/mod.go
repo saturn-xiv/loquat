@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/saturn-xiv/palm/loquat/env"
+	"github.com/saturn-xiv/loquat/env"
 )
 
 var (

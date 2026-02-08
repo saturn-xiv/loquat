@@ -6,7 +6,7 @@ import (
 
 	"gorm.io/gorm"
 
-	"github.com/saturn-xiv/palm/loquat/router/nmap"
+	"github.com/saturn-xiv/loquat/router/nmap"
 )
 
 type Host struct {
