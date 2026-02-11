@@ -94,8 +94,8 @@ const IForm = withFormik<
 >({
   mapPropsToValues: (props) => {
     return {
-      name: props.host.name,
-      ip: props.host.ip,
+      name: props.host.name || '',
+      ip: props.host.ip || '',
       dhcp: !props.host.fixed,
     };
   },

@@ -5,7 +5,7 @@ import FooterBar from "../components/FooterBar";
 
 const Widget = () => {
   return (
-    <div className="container">
+    <div className="container .is-fullhd">
       <NotificationBar />
       <Outlet />
       <FooterBar />

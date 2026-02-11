@@ -6,6 +6,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 
 	graphql "github.com/graph-gophers/graphql-go"
@@ -13,6 +14,8 @@ import (
 
 	"github.com/saturn-xiv/loquat/models"
 )
+
+var gl_internal_members = []string{"anonymous"}
 
 func (p *Mutation) CreateMember(ctx context.Context, args struct {
 	Id   graphql.ID
@@ -150,6 +153,9 @@ func (p *Mutation) EnableMember(ctx context.Context, args struct {
 		if err := tx.Unscoped().Where(map[string]interface{}{"id": id}).Take(&member).Error; err != nil {
 			return err
 		}
+		if slices.Contains(gl_internal_members, member.Sn) {
+			return fmt.Errorf("%s is an internal member", member.Sn)
+		}
 		if err = tx.Unscoped().Model(&member).Updates(map[string]interface{}{
 			"deleted_at": nil,
 			"version":    member.Version + 1,
@@ -178,6 +184,9 @@ func (p *Mutation) DisableMember(ctx context.Context, args struct {
 		var member models.Member
 		if err := tx.Where(map[string]interface{}{"id": id}).Take(&member).Error; err != nil {
 			return err
+		}
+		if slices.Contains(gl_internal_members, member.Sn) {
+			return fmt.Errorf("%s is an internal member", member.Sn)
 		}
 		if err = tx.Delete(&member).Error; err != nil {
 			return err

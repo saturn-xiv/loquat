@@ -21,6 +21,8 @@ import ConfirmDialog from "../../components/ConfirmDialog";
 
 export const INDEX = "/dashboard/members";
 
+const INTERNAL_MEMBERS = ['anonymous']
+
 const Widget = () => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
@@ -152,7 +154,7 @@ const Widget = () => {
                         <SetWifiPassword item={it} />
                       </ModalForm>
 
-                      <ConfirmDialog
+                      {INTERNAL_MEMBERS.includes(it.sn) || <ConfirmDialog
                         button={{
                           action: "danger",
                           label: intl.formatMessage({ id: "buttons.disable" }),
@@ -176,7 +178,7 @@ const Widget = () => {
                           id="pages.members.index.disable.content"
                           values={{ sn: it.sn }}
                         />
-                      </ConfirmDialog>
+                      </ConfirmDialog>}
                     </>
                   )}
                 </div>
