@@ -24,7 +24,7 @@ const InnerForm = (
   props: {
     onSubmit: (value: IFormValues) => Promise<void>;
     members: IMember[];
-  } & FormikProps<IFormValues>
+  } & FormikProps<IFormValues>,
 ) => {
   const { touched, errors, members, isSubmitting } = props;
   return (
@@ -106,8 +106,8 @@ const IForm = withFormik<
 
 const Widget = ({ item, members }: IProps) => {
   const intl = useIntl();
-  const [notification, setNotification] = useState<INotificationBarState>(); 
-  
+  const [notification, setNotification] = useState<INotificationBarState>();
+
   return (
     <>
       {notification && (

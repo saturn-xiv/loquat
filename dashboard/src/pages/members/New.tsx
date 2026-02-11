@@ -18,7 +18,7 @@ interface IFormValues {
 const InnerForm = (
   props: {
     onSubmit: (value: IFormValues) => Promise<void>;
-  } & FormikProps<IFormValues>
+  } & FormikProps<IFormValues>,
 ) => {
   const { touched, errors, isSubmitting } = props;
   return (

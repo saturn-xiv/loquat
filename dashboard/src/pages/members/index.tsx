@@ -21,7 +21,7 @@ import ConfirmDialog from "../../components/ConfirmDialog";
 
 export const INDEX = "/dashboard/members";
 
-const INTERNAL_MEMBERS = ['anonymous']
+const INTERNAL_MEMBERS = ["anonymous"];
 
 const Widget = () => {
   const intl = useIntl();
@@ -109,7 +109,7 @@ const Widget = () => {
                             dispatch(
                               show_success([
                                 intl.formatMessage({ id: "flashes.succeed" }),
-                              ])
+                              ]),
                             );
                             await handleRefresh();
                           } else if (res.errors) {
@@ -128,7 +128,7 @@ const Widget = () => {
                       <ModalForm
                         title={intl.formatMessage(
                           { id: "pages.members.edit.title" },
-                          { sn: it.sn }
+                          { sn: it.sn },
                         )}
                         button={{
                           action: "link",
@@ -141,7 +141,7 @@ const Widget = () => {
                       <ModalForm
                         title={intl.formatMessage(
                           { id: "pages.members.set-wifi-password.title" },
-                          { sn: it.sn }
+                          { sn: it.sn },
                         )}
                         button={{
                           action: "info",
@@ -154,31 +154,35 @@ const Widget = () => {
                         <SetWifiPassword item={it} />
                       </ModalForm>
 
-                      {INTERNAL_MEMBERS.includes(it.sn) || <ConfirmDialog
-                        button={{
-                          action: "danger",
-                          label: intl.formatMessage({ id: "buttons.disable" }),
-                        }}
-                        title={intl.formatMessage({ id: "are-you-sure" })}
-                        onSubmit={async () => {
-                          const res = await disable_member(it.id);
-                          if (res.data?.disableMember) {
-                            dispatch(
-                              show_success([
-                                intl.formatMessage({ id: "flashes.succeed" }),
-                              ])
-                            );
-                            await handleRefresh();
-                          } else if (res.errors) {
-                            dispatch(show_danger(res.errors));
-                          }
-                        }}
-                      >
-                        <FormattedMessage
-                          id="pages.members.index.disable.content"
-                          values={{ sn: it.sn }}
-                        />
-                      </ConfirmDialog>}
+                      {INTERNAL_MEMBERS.includes(it.sn) || (
+                        <ConfirmDialog
+                          button={{
+                            action: "danger",
+                            label: intl.formatMessage({
+                              id: "buttons.disable",
+                            }),
+                          }}
+                          title={intl.formatMessage({ id: "are-you-sure" })}
+                          onSubmit={async () => {
+                            const res = await disable_member(it.id);
+                            if (res.data?.disableMember) {
+                              dispatch(
+                                show_success([
+                                  intl.formatMessage({ id: "flashes.succeed" }),
+                                ]),
+                              );
+                              await handleRefresh();
+                            } else if (res.errors) {
+                              dispatch(show_danger(res.errors));
+                            }
+                          }}
+                        >
+                          <FormattedMessage
+                            id="pages.members.index.disable.content"
+                            values={{ sn: it.sn }}
+                          />
+                        </ConfirmDialog>
+                      )}
                     </>
                   )}
                 </div>

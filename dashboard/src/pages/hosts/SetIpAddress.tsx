@@ -7,11 +7,7 @@ import {
   NotificationBar,
   type INotificationBarState,
 } from "../../components/NotificationBar";
-import {  
-  set_dynamic_ip,
-  set_static_ip,
-  type IHost,
-} from "../../api/hosts";
+import { set_dynamic_ip, set_static_ip, type IHost } from "../../api/hosts";
 
 interface IProps {
   item: IHost;
@@ -25,8 +21,8 @@ interface IFormValues {
 
 const InnerForm = (
   props: {
-    onSubmit: (value: IFormValues) => Promise<void>;    
-  } & FormikProps<IFormValues>
+    onSubmit: (value: IFormValues) => Promise<void>;
+  } & FormikProps<IFormValues>,
 ) => {
   const { touched, errors, isSubmitting, values } = props;
   return (
@@ -48,7 +44,7 @@ const InnerForm = (
             <FormattedMessage id="forms.fields.label.ip" />
           </label>
           <div className="control">
-            <Field className="input" name="ip" disabled />            
+            <Field className="input" name="ip" disabled />
           </div>
           {touched.ip && errors.ip && (
             <p className="help is-danger">{errors.ip}</p>
@@ -87,15 +83,15 @@ const InnerForm = (
 
 const IForm = withFormik<
   {
-    host: IHost;    
+    host: IHost;
     onSubmit: (value: IFormValues) => Promise<void>;
   },
   IFormValues
 >({
   mapPropsToValues: (props) => {
     return {
-      name: props.host.name || '',
-      ip: props.host.ip || '',
+      name: props.host.name || "",
+      ip: props.host.ip || "",
       dhcp: !props.host.fixed,
     };
   },
@@ -110,9 +106,9 @@ const IForm = withFormik<
 })(InnerForm);
 
 const Widget = ({ item }: IProps) => {
-  const intl = useIntl();  
+  const intl = useIntl();
   const [notification, setNotification] = useState<INotificationBarState>();
-  
+
   return (
     <>
       {notification && (
@@ -123,7 +119,7 @@ const Widget = ({ item }: IProps) => {
           state={notification}
         />
       )}
-      <IForm        
+      <IForm
         host={item}
         onSubmit={async (values) => {
           if (values.dhcp) {

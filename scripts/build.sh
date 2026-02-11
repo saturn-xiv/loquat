@@ -45,11 +45,12 @@ function build_deb() {
     
     cd $WORKSPACE/
     mkdir -p $target/usr/share/loquat
-    cp -r README.md scripts/debian.sh etc $target/usr/share/loquat/
+    cp -r README.md scripts/debian.sh $target/usr/share/loquat/
+    cp -r etc $target/
     cp -r dashboard/dist $target/usr/share/loquat/dashboard
     cp -r .debian $target/DEBIAN
-    mkdir -p $target/var/lib/$1
-    chmod 400 $target/var/lib/$1
+    mkdir -p $target/var/lib/loquat
+    chmod 700 $target/var/lib/loquat
 
     cd $(dirname $target/)
     sed -i "7s/all/$1/g" $target/DEBIAN/control
@@ -64,12 +65,26 @@ then
     exit 1
 fi
 
+declare -a platforms=("amd64" "arm64" "riscv64")
+
+for p in "${platforms[@]}"
+do
+    if [ -d $WORKSPACE/tmp/loquat-$VERSION-$p ]
+    then
+        rm -rf $WORKSPACE/tmp/loquat-$VERSION-$p
+    fi
+    if [ -f $WORKSPACE/tmp/loquat-${VERSION}_${p}.deb ]
+    then
+        rm $WORKSPACE/tmp/loquat-${VERSION}_${p}.deb
+    fi
+done
+
 build_dashboard loquat
 build_go amd64 x86_64
 build_go arm64 aarch64
 build_go riscv64 riscv64
 
-declare -a platforms=("amd64" "arm64" "riscv64")
+
 for p in "${platforms[@]}"
 do
     build_deb $p
