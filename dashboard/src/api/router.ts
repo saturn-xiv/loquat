@@ -67,6 +67,7 @@ interface ISystemStatus {
   diskIndexNodes: string;
   cpu: string;
   memory: string;
+  sensors: string;
   top: string;
   sar: string;
   network: string;
@@ -100,6 +101,7 @@ export const status = async (): Promise<IGraphqlResponse<IStatusResponse>> => {
         status {
           cpu
           memory
+          sensors
           top
           network
           sar

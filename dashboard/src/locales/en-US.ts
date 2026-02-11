@@ -31,6 +31,7 @@ export default {
   "pages.dashboard.home.system-status": "System status",
   "pages.dashboard.home.system-status.cpu": "CPU",
   "pages.dashboard.home.system-status.memory": "Memory",
+  "pages.dashboard.home.system-status.sensors": "Sensors",
   "pages.dashboard.home.system-status.disk-space": "Disk space",
   "pages.dashboard.home.system-status.disk-index-nodes": "Disk index nodes",
   "pages.dashboard.home.system-status.network": "Network",

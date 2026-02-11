@@ -37,6 +37,7 @@ const Widget = () => {
       <div className="grid is-col-min-24">
         <Status title="cpu" content={item?.status.cpu || ""} />
         <Status title="memory" content={item?.status.memory || ""} />
+        <Status title="sensors" content={item?.status.sensors || ""} />
         <Status title="disk-space" content={item?.status.diskSpace || ""} />
         <Status
           title="disk-index-nodes"

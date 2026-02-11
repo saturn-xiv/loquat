@@ -45,6 +45,14 @@ func (p *SystemStatus) Memory() (string, error) {
 	}
 	return string(buf), nil
 }
+
+func (p *SystemStatus) Sensors() (string, error) {
+	buf, err := exec.Command("sensors").Output()
+	if err != nil {
+		return "", err
+	}
+	return string(buf), nil
+}
 func (p *SystemStatus) DiskSpace() (string, error) {
 	buf, err := exec.Command("df", "-a", "-h").Output()
 	if err != nil {
