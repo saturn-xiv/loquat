@@ -24,6 +24,17 @@ const Widget = () => {
   return (
     <>
       <div className="is-size-3">
+        <div className="buttons are-small">
+          <a
+            className="button is-link is-inverted is-rounded"
+            target="_blank"
+            href="https://ip.me/"
+          >
+            What is my IP address?
+          </a>
+        </div>
+      </div>
+      <div className="is-size-3">
         <FormattedMessage id="pages.dashboard.home.interfaces" />
       </div>
       <div className="grid is-col-min-12">
