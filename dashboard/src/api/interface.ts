@@ -192,7 +192,6 @@ export const set_interface_dhcp = async (
   memo: string,
   priority: number,
 ): Promise<IGraphqlResponse<ISetInterfaceDhcpResponse>> => {
-  console.log("priority", priority);
   const res: IGraphqlResponse<ISetInterfaceDhcpResponse> = await graphql(
     `
       mutation call(
