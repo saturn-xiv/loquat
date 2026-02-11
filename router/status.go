@@ -23,7 +23,7 @@ func (p *SystemStatus) Sar() (string, error) {
 }
 
 func (p *SystemStatus) Network() (string, error) {
-	buf, err := exec.Command("netstat", "-a").Output()
+	buf, err := exec.Command("netstat", "-an").Output()
 	if err != nil {
 		return "", err
 	}
