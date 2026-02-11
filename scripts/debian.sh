@@ -19,7 +19,7 @@ apt install -y sudo vim tmux pwgen curl bc \
     dnsmasq geoip-bin geoip-database inotify-tools watchman \
     bridge-utils net-tools inetutils-tools sysstat iftop nload nethogs nmap lm-sensors masscan iputils-tracepath netplan.io firewalld systemd-resolved \
     cmake ninja-build git build-essential distcc crossbuild-essential-arm64 crossbuild-essential-riscv64 \
-    firmware-misc-nonfree firmware-linux-nonfree \
+    firmware-misc-nonfree firmware-linux-nonfree firmware-linux-free \
     crun podman buildah fuse-overlayfs \
     intel-microcode firmware-intel-graphics firmware-intel-misc firmware-intel-sound \
     cups printer-driver-cups-pdf
