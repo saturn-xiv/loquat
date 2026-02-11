@@ -15,6 +15,7 @@ import {
   danger as show_danger,
   success as show_success,
 } from "../../reducers/notification";
+import { index as index_member, type IMember } from "../../api/members";
 import ModalForm from "../../components/ModalForm";
 import ConfirmDialog from "../../components/ConfirmDialog";
 import Timestamp from "../../components/Timestamp";
@@ -23,13 +24,24 @@ const Widget = () => {
   const intl = useIntl();
   const [, copy] = useCopyToClipboard();
   const dispatch = useAppDispatch();
-  const [items, setItems] = useState<IHost[]>([]);
+  const [hosts, setHosts] = useState<IHost[]>([]);
+  const [members, setMembers] = useState<IMember[]>([]);
   const handleRefresh = async () => {
-    const res = await index_host();
-    if (res.data?.indexHost) {
-      setItems(res.data.indexHost);
-    } else if (res.errors) {
-      dispatch(show_danger(res.errors));
+    {
+      const res = await index_host();
+      if (res.data?.indexHost) {
+        setHosts(res.data.indexHost);
+      } else if (res.errors) {
+        dispatch(show_danger(res.errors));
+      }
+    }
+    {
+      const res = await index_member();
+      if (res.data?.indexMember) {
+        setMembers(res.data.indexMember);
+      } else if (res.errors) {
+        dispatch(show_danger(res.errors));
+      }
     }
   };
   const onSelect = useCallback(handleRefresh, [dispatch]);
@@ -73,7 +85,7 @@ const Widget = () => {
           </tr>
         </thead>
         <tbody>
-          {items.map((it, id) => (
+          {hosts.map((it, id) => (
             <tr key={id}>
               <td>
                 <span onClick={() => copy(it.mac)} className="tag">
@@ -172,7 +184,7 @@ const Widget = () => {
                         }}
                         handleRefresh={handleRefresh}
                       >
-                        <SetOwnerForm item={it} />
+                        <SetOwnerForm item={it} members={members} />
                       </ModalForm>
 
                       <ConfirmDialog

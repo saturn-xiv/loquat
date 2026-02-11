@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import * as Yup from "yup";
 import { withFormik, type FormikProps, Form, Field } from "formik";
 import { FormattedMessage, useIntl } from "react-intl";
 
 import { associate_with_member, type IHost } from "../../api/hosts";
-import { index as index_member, type IMember } from "../../api/members";
+import { type IMember } from "../../api/members";
 import {
   NotificationBar,
   type INotificationBarState,
@@ -12,6 +12,7 @@ import {
 
 interface IProps {
   item: IHost;
+  members: IMember[];
 }
 
 interface IFormValues {
@@ -103,27 +104,10 @@ const IForm = withFormik<
   },
 })(InnerForm);
 
-const Widget = ({ item }: IProps) => {
+const Widget = ({ item, members }: IProps) => {
   const intl = useIntl();
-  const [members, setMembers] = useState<IMember[]>([]);
-  const [notification, setNotification] = useState<INotificationBarState>();
-
-  const loadMembers = useCallback(async () => {
-    const res = await index_member();
-    if (res.data?.indexMember) {
-      setMembers(res.data.indexMember);
-    } else if (res.errors) {
-      setNotification({
-        action: "danger",
-        messages: res.errors.map((it) => it.message),
-      });
-    }
-  }, []);
-  useEffect(() => {
-    (async () => {
-      await loadMembers();
-    })();
-  }, [loadMembers]);
+  const [notification, setNotification] = useState<INotificationBarState>(); 
+  
   return (
     <>
       {notification && (

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import * as Yup from "yup";
 import { withFormik, type FormikProps, Form, Field } from "formik";
@@ -7,8 +7,7 @@ import {
   NotificationBar,
   type INotificationBarState,
 } from "../../components/NotificationBar";
-import {
-  addresses as fetch_addresses,
+import {  
   set_dynamic_ip,
   set_static_ip,
   type IHost,
@@ -26,11 +25,10 @@ interface IFormValues {
 
 const InnerForm = (
   props: {
-    onSubmit: (value: IFormValues) => Promise<void>;
-    addresses: string[];
+    onSubmit: (value: IFormValues) => Promise<void>;    
   } & FormikProps<IFormValues>
 ) => {
-  const { touched, errors, addresses, isSubmitting, values } = props;
+  const { touched, errors, isSubmitting, values } = props;
   return (
     <Form>
       <div className="field">
@@ -50,15 +48,7 @@ const InnerForm = (
             <FormattedMessage id="forms.fields.label.ip" />
           </label>
           <div className="control">
-            <div className="select">
-              <Field name="ip" component="select">
-                {addresses.map((it, id) => (
-                  <option key={id} value={it}>
-                    {it}
-                  </option>
-                ))}
-              </Field>
-            </div>
+            <Field className="input" name="ip" disabled />            
           </div>
           {touched.ip && errors.ip && (
             <p className="help is-danger">{errors.ip}</p>
@@ -97,8 +87,7 @@ const InnerForm = (
 
 const IForm = withFormik<
   {
-    host: IHost;
-    addresses: string[];
+    host: IHost;    
     onSubmit: (value: IFormValues) => Promise<void>;
   },
   IFormValues
@@ -121,26 +110,9 @@ const IForm = withFormik<
 })(InnerForm);
 
 const Widget = ({ item }: IProps) => {
-  const intl = useIntl();
-  const [addresses, setAddresses] = useState<string[]>([]);
+  const intl = useIntl();  
   const [notification, setNotification] = useState<INotificationBarState>();
-
-  const loadAddresses = useCallback(async () => {
-    const res = await fetch_addresses(item.network);
-    if (res.data?.addresses) {
-      setAddresses(res.data.addresses);
-    } else if (res.errors) {
-      setNotification({
-        action: "danger",
-        messages: res.errors.map((it) => it.message),
-      });
-    }
-  }, [item]);
-  useEffect(() => {
-    (async () => {
-      await loadAddresses();
-    })();
-  }, [loadAddresses]);
+  
   return (
     <>
       {notification && (
@@ -151,8 +123,7 @@ const Widget = ({ item }: IProps) => {
           state={notification}
         />
       )}
-      <IForm
-        addresses={addresses}
+      <IForm        
         host={item}
         onSubmit={async (values) => {
           if (values.dhcp) {
