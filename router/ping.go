@@ -1,9 +1,13 @@
 package router
 
-import "os/exec"
+import (
+	"log/slog"
+	"os/exec"
+)
 
 func Ping(device string, host string) (string, error) {
-	buf, err := exec.Command("ping", "-I", device, "-c", "10", "-W", "2", "-4", host).Output()
+	slog.Debug("ping", "device", device, "host", host)
+	buf, err := exec.Command("ping", "-I", device, "-c", "3", "-W", "2", "-4", host).Output()
 	if err != nil {
 		return "", err
 	}

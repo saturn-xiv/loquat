@@ -14,7 +14,7 @@ type ApplyConfig struct {
 
 func Apply(config_file string, run bool, debug bool) error {
 	slog.Debug("load configuration from", "file", config_file)
-	var config NetScanConfig
+	var config ApplyConfig
 
 	if _, err := toml.DecodeFile(config_file, &config); err != nil {
 		return err

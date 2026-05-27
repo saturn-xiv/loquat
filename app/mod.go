@@ -13,6 +13,8 @@ var (
 	gl_config_file                string
 	gl_debug                      bool
 	gl_apply_run                  bool
+	gl_heartbeat_run              bool
+	gl_heartbeat_host             string
 	gl_http_port                  uint16
 	gl_set_administrator_username string
 	gl_set_administrator_password string
@@ -60,6 +62,16 @@ var (
 			}
 		},
 	}
+
+	gl_heartbeat_cmd = &cobra.Command{
+		Use:   "heartbeat",
+		Short: "Check network availability",
+		Run: func(cmd *cobra.Command, args []string) {
+			if err := Heartbeat(gl_config_file, gl_heartbeat_host, gl_heartbeat_run, gl_debug); err != nil {
+				log.Fatal(err)
+			}
+		},
+	}
 )
 
 func Execute() error {
@@ -79,7 +91,10 @@ func init() {
 
 	gl_apply_cmd.PersistentFlags().BoolVarP(&gl_apply_run, "run", "r", false, "run it")
 
-	gl_root_cmd.AddCommand(gl_http_cmd, gl_net_scan_cmd, gl_apply_cmd, gl_set_administrator_cmd)
+	gl_heartbeat_cmd.PersistentFlags().BoolVarP(&gl_heartbeat_run, "run", "r", false, "run it")
+	gl_heartbeat_cmd.PersistentFlags().StringVarP(&gl_heartbeat_host, "hostname", "H", "", "target host(223.5.5.5, 8.8.8.8 etc...)")
+
+	gl_root_cmd.AddCommand(gl_http_cmd, gl_net_scan_cmd, gl_apply_cmd, gl_heartbeat_cmd, gl_set_administrator_cmd)
 }
 
 func init_logger() {
