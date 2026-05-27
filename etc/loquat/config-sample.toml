@@ -1,0 +1,17 @@
+# openssl rand -base64 32
+secret-key = ""
+administrators = ["who-am-i@change-me.org"]
+
+[postgresql]
+host = "127.0.0.1"
+port = 5432
+db-name = "loquat"
+user = "www"
+password = "change-me"
+pool-size = 16
+
+[smtp]
+host = "smtp.gmail.com"
+port = 587
+user = "ops@change-me.org"
+password = "change-me"
