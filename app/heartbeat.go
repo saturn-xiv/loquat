@@ -61,12 +61,10 @@ func Heartbeat(config_file string, host string, run bool, debug bool) error {
 			return e
 		}
 		if err == gorm.ErrRecordNotFound {
+			apply = true
 		} else if err != nil {
 			return err
 		} else if !maps.Equal(status.Items, last.Items) {
-			if err := models.SetB(db, key, &status); err != nil {
-				return err
-			}
 			apply = true
 		}
 	}
