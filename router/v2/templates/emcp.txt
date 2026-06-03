@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -e
+
+ip route replace default scope global {{ range $dev, $eth := . }} nexthop via {{ $eth.ip }} dev {{ $dev }} weight {{ $eth.weight }} {{ end }}
+
+exit 0

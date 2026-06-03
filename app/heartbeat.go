@@ -4,10 +4,13 @@ import (
 	"bytes"
 	_ "embed"
 	"errors"
+	"fmt"
 	html_template "html/template"
 	"log/slog"
 	"maps"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"slices"
 	"strings"
 	text_template "text/template"
@@ -21,6 +24,7 @@ import (
 	"github.com/saturn-xiv/loquat/models"
 	"github.com/saturn-xiv/loquat/router"
 	router_v2 "github.com/saturn-xiv/loquat/router/v2"
+	v2 "github.com/saturn-xiv/loquat/router/v2"
 )
 
 type HeartbeatConfig struct {
@@ -49,6 +53,9 @@ func Heartbeat(config_file string, host string, run bool, debug bool) error {
 	if err != nil {
 		return err
 	}
+	if rt.Wan == nil {
+		return nil
+	}
 	var apply = false
 
 	status := NewEthernetHeartbeatStatus(host, slices.Collect(maps.Keys(rt.Wan))...)
@@ -68,25 +75,36 @@ func Heartbeat(config_file string, host string, run bool, debug bool) error {
 			apply = true
 		}
 	}
+
+	if len(rt.Wan) == 0 {
+		slog.Error("no wan networks")
+		return nil
+	}
+
 	if !apply {
 		return nil
 	}
-	subject, body, err := build__heartbeat_email(status, rt)
+	subject, body, err := build_heartbeat_email(status, rt)
 	if err != nil {
 		return err
 	}
-	for device := range rt.Wan {
-		if !status.Items[device] {
-			delete(rt.Wan, device)
+	for name, ok := range status.Items {
+		if !ok {
+			delete(rt.Wan, name)
 		}
 	}
-	if err = rt.Apply(run); err != nil {
-		return err
-	}
-
-	if run {
-		if err := graphql.SetLastRunAt(db); err != nil {
+	{
+		tmp := filepath.Join(os.TempDir(), fmt.Sprintf("route-%s.sh", time.Now().Format("20060102150405")))
+		if err := render_ecmp_file(tmp, rt.Wan); err != nil {
 			return err
+		}
+
+		if run {
+			slog.Warn("try to apply script", "name", tmp)
+			cmd := exec.Command("bash", tmp)
+			if err := cmd.Run(); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -96,6 +114,16 @@ func Heartbeat(config_file string, host string, run bool, debug bool) error {
 
 	slog.Info("done.")
 	return nil
+}
+
+func render_ecmp_file(name string, wan map[string]*v2.Internet) error {
+	slog.Info("generate shell script", "file", name)
+	file, err := os.Create(name)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	return v2.Ecmp(file, wan)
 }
 
 type EthernetHeartbeatStatus struct {
@@ -133,7 +161,7 @@ var gl_heartbeat_report_subject string
 //go:embed heartbeat-report/body.html.tpl
 var gl_heartbeat_report_body string
 
-func build__heartbeat_email(status *EthernetHeartbeatStatus, router *router_v2.Router) (string, string, error) {
+func build_heartbeat_email(status *EthernetHeartbeatStatus, router *router_v2.Router) (string, string, error) {
 	hostname, err := os.Hostname()
 	if err != nil {
 		return "", "", err

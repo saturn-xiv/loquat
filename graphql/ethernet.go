@@ -65,7 +65,7 @@ func (p *Mutation) SetNetworkInterfacePublicStaticIp(ctx context.Context, args s
 		profile.Gateway = args.Gateway
 		profile.Dns = args.Dns
 		profile.Dhcp = false
-		profile.Priority = uint32(args.Priority)
+		profile.Priority = uint8(args.Priority)
 		profile.Weight = uint8(args.Weight)
 		profile.Enable = true
 		if err = models.SetB(tx, ethernetKey(args.Name), &profile); err != nil {
@@ -97,7 +97,7 @@ func (p *Mutation) SetNetworkInterfacePublicDhcp(ctx context.Context, args struc
 		profile.Memo = args.Memo
 		profile.Isp = args.Isp
 		profile.Dhcp = true
-		profile.Priority = uint32(args.Priority)
+		profile.Priority = uint8(args.Priority)
 		profile.Weight = uint8(args.Weight)
 		profile.Enable = true
 		if err = models.SetB(tx, ethernetKey(args.Name), &profile); err != nil {
@@ -215,7 +215,7 @@ type ethernetProfile struct {
 	Isp      string
 	Label    string
 	Memo     string
-	Priority uint32
+	Priority uint8
 	Weight   uint8
 	Enable   bool
 }

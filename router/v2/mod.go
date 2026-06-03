@@ -25,3 +25,22 @@ func netmask_to_cidr(s string) (int, error) {
 	size, _ := mask.Size()
 	return size, nil
 }
+
+func Ipv4(name string) (string, error) {
+	face, err := net.InterfaceByName(name)
+	if err != nil {
+		return "", err
+	}
+	items, err := face.Addrs()
+	if err != nil {
+		return "", err
+	}
+	for _, it := range items {
+		if ip, ok := it.(*net.IPNet); ok {
+			if ip.IP.To4() != nil {
+				return ip.IP.String(), nil
+			}
+		}
+	}
+	return "", fmt.Errorf("couldn't found ipv4 for %s", name)
+}

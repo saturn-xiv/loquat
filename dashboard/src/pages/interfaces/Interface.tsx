@@ -184,7 +184,7 @@ const InnerForm = (
           <div className="control">
             <div className="select">
               <Field name="weight" component="select">
-                {[1, 2, 3, 4, 5].map((it, id) => (
+                {[1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15].map((it, id) => (
                   <option key={id} value={it}>
                     {it}
                   </option>

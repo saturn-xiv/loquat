@@ -37,5 +37,5 @@ func (p *Internet) netplan(dev string) (string, error) {
 }
 
 func (p *Internet) metric() uint32 {
-	return p.Priority + 100
+	return p.Priority + 200
 }

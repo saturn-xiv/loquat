@@ -74,7 +74,8 @@ func load_wan(db *gorm.DB) (map[string]*v2.Internet, error) {
 		it := v2.Internet{
 			Label:    profile.Label,
 			Isp:      profile.Isp,
-			Priority: profile.Priority + 100,
+			Priority: uint32(profile.Priority),
+			Weight:   uint32(profile.Weight),
 			Memo:     profile.Memo,
 		}
 		if profile.Dhcp {
