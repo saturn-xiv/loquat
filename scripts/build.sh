@@ -59,9 +59,9 @@ function build_deb() {
 
 # -----------------------------------------------------------------------------
 
-if [ "$ID" != "ubuntu" ]
+if [[ "$ID" != "ubuntu" && "$ID" != "debian" ]]
 then
-    echo "unsupported system $ID"
+    echo "unsupported system $PRETTY_NAME"
     exit 1
 fi
 
