@@ -15,7 +15,7 @@ fi
 
 apt update
 apt upgrade -y
-apt install -y sudo vim tmux pwgen curl bc \
+apt install -y sudo vim tmux pwgen curl bc psmisc \
     dnsmasq geoip-bin geoip-database inotify-tools watchman \
     bridge-utils net-tools inetutils-tools sysstat iftop nload nethogs nmap lm-sensors masscan iputils-tracepath netplan.io firewalld systemd-resolved \
     cmake ninja-build git build-essential distcc crossbuild-essential-arm64 crossbuild-essential-riscv64 \
