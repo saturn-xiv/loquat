@@ -7,7 +7,7 @@ After=network-online.target
 Type=oneshot
 User=root
 Group=root
-ExecStart=/usr/bin/loquat -c /etc/loquat/config.toml -d heartbeat -H 223.5.5.5 -r
+ExecStart=/usr/bin/loquat -c /etc/loquat/config.toml heartbeat -H 223.5.5.5 -r
 WorkingDirectory=/var/lib/loquat
 
 [Install]
