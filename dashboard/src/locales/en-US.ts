@@ -92,6 +92,7 @@ export default {
   "forms.fields.label.sn": "SN",
   "forms.fields.label.ip": "IP",
   "forms.fields.label.priority": "Priority",
+  "forms.fields.label.weight": "Weight",
   "forms.fields.label.owner": "Owner",
   "forms.fields.label.sort-order": "Sort order",
   "forms.fields.label.device": "Device",

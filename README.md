@@ -24,6 +24,7 @@ systemctl list-timers --all
 - [Advanced traffic control](https://wiki.archlinux.org/title/Advanced_traffic_control)
 - [Introduction to modern network load balancing and proxying](https://blog.envoyproxy.io/introduction-to-modern-network-load-balancing-and-proxying-a57f6ff80236)
 - [Equal Cost Multipath Load Sharing - Hardware ECMP](https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-44/Layer-3/Routing/Equal-Cost-Multipath-Load-Sharing-Hardware-ECMP/)
+- [IP Calculator](https://jodies.de/ipcalc)
 
 ### Emails
 

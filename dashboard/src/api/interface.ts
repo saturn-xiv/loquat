@@ -148,6 +148,7 @@ export const set_interface_static_ip = async (
   dns: string[],
   memo: string,
   priority: number,
+  weight: number,
 ): Promise<IGraphqlResponse<ISetInterfaceStaticIpResponse>> => {
   const res: IGraphqlResponse<ISetInterfaceStaticIpResponse> = await graphql(
     `
@@ -161,6 +162,7 @@ export const set_interface_static_ip = async (
         $dns: [String!]!
         $memo: String!
         $priority: Int!
+        $weight: Int!
       ) {
         setNetworkInterfacePublicStaticIp(
           name: $name
@@ -172,12 +174,24 @@ export const set_interface_static_ip = async (
           dns: $dns
           memo: $memo
           priority: $priority
+          weight: $weight
         ) {
           createdAt
         }
       }
     `,
-    { name, label, isp, address, netmask, gateway, dns, memo, priority },
+    {
+      name,
+      label,
+      isp,
+      address,
+      netmask,
+      gateway,
+      dns,
+      memo,
+      priority,
+      weight,
+    },
   );
   return res;
 };
@@ -191,6 +205,7 @@ export const set_interface_dhcp = async (
   isp: string,
   memo: string,
   priority: number,
+  weight: number,
 ): Promise<IGraphqlResponse<ISetInterfaceDhcpResponse>> => {
   const res: IGraphqlResponse<ISetInterfaceDhcpResponse> = await graphql(
     `
@@ -200,6 +215,7 @@ export const set_interface_dhcp = async (
         $isp: Isp!
         $memo: String!
         $priority: Int!
+        $weight: Int!
       ) {
         setNetworkInterfacePublicDhcp(
           name: $name
@@ -207,12 +223,13 @@ export const set_interface_dhcp = async (
           isp: $isp
           memo: $memo
           priority: $priority
+          weight: $weight
         ) {
           createdAt
         }
       }
     `,
-    { name, label, isp, memo, priority },
+    { name, label, isp, memo, priority, weight },
   );
   return res;
 };
@@ -243,6 +260,7 @@ export interface IDhcp {
   isp: string;
   memo: string;
   priority: number;
+  weight: number;
   enable: boolean;
 }
 
@@ -256,6 +274,7 @@ export interface IStaticIp {
   dns: string[];
   memo: string;
   priority: number;
+  weight: number;
   enable: boolean;
 }
 
