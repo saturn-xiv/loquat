@@ -16,8 +16,9 @@ fi
 apt update
 apt upgrade -y
 apt install -y sudo vim tmux pwgen curl bc psmisc \
+    ustreamer v4l-utils ffmpeg \
     dnsmasq geoip-bin geoip-database inotify-tools watchman \
-    bridge-utils net-tools inetutils-tools sysstat iftop nload nethogs nmap lm-sensors masscan iputils-tracepath netplan.io firewalld systemd-resolved \
+    bridge-utils net-tools inetutils-tools sysstat lshw iftop nload nethogs nmap lm-sensors masscan iputils-tracepath netplan.io firewalld systemd-resolved \
     cmake ninja-build git build-essential distcc crossbuild-essential-arm64 crossbuild-essential-riscv64 \
     firmware-misc-nonfree firmware-linux-nonfree firmware-linux-free \
     crun podman buildah fuse-overlayfs \
