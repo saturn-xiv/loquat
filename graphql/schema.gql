@@ -162,6 +162,7 @@ type StaticIp {
   gateway: String!
   dns: [String!]!
   priority: Int!
+  weight: Int!
   enable: Boolean!
 }
 type DynamicIp {
@@ -169,6 +170,7 @@ type DynamicIp {
   memo: String!
   isp: String!
   priority: Int!
+  weight: Int!
   enable: Boolean!
 }
 union NetworkInterfaceProfile = StaticIp | DynamicIp

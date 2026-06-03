@@ -300,12 +300,16 @@ export const get_interface = async (
             gateway
             dns
             memo
+            priority
+            weight
             enable
           }
           ... on DynamicIp {
             label
             isp
             memo
+            priority
+            weight
             enable
           }
         }
