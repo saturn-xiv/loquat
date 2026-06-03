@@ -48,6 +48,7 @@ func LaunchHttpServer(config_file string, port uint16, debug bool) error {
 	}
 	router := mux.NewRouter()
 	router.Handle("/graphql", graphql_hnd).Methods(http.MethodGet, http.MethodPost)
+	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir("assets")))).Methods(http.MethodGet)
 	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		var buf strings.Builder
 		if err := controllers.Home(&buf); err != nil {

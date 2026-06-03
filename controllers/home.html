@@ -1,27 +1,61 @@
 <!doctype html>
-<html>
+<html data-bs-theme="light">
   <head>
-    <title>{{ .hostname }} - {{ .description }}</title>
-    <style>
-      body {
-        margin: 0;
-        display: flex;
-        flex-direction: column;
-        min-height: 100dvh;
-      }
-      .page-footer {
-        margin-top: auto;
-        padding: 20px;
-      }
-    </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="{{ .description }}" />
+    <meta name="author" content="Jeremy Zheng" />
+    <link rel="icon" href="/my/favicon.svg" type="image/svg+xml" />
+    <title>Home - {{ .hostname }}</title>
+    <link
+      href="/assets/bootstrap-5.3.8-dist/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="/assets/application.css" rel="stylesheet" />
+    <script src="/assets/bootstrap-5.3.8-dist/bootstrap.bundle.min.js"></script>
   </head>
   <body>
-    <header>{{ .now }}</header>
+    <header data-bs-theme="dark">
+      <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/">{{ .hostname }}</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/my/">Dashboard</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/stream">Camera</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
     <main>
-      <a href="/my/">Dashboard</a>
-      &nbsp;
-      <a href="/stream">Camera</a>
+      <div class="container" style="margin-bottom: 4rem"></div>
+      <footer class="container">
+        <p class="float-end">{{ .now }}</p>
+        <p>
+          &copy; 2026 {{ .version }} The source code is licensed &nbsp;
+          <a target="_blank" href="https://opensource.org/license/mit"> MIT </a>
+          .
+        </p>
+      </footer>
     </main>
-    <footer class="page-footer">{{ .version }}</footer>
   </body>
 </html>

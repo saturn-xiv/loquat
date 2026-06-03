@@ -51,6 +51,7 @@ function build_deb() {
     cp -r .debian $target/DEBIAN
     mkdir -p $target/var/lib/loquat
     chmod 700 $target/var/lib/loquat
+    cp -r assets $target/var/lib/loquat/
 
     cd $(dirname $target/)
     sed -i "7s/all/$1/g" $target/DEBIAN/control
