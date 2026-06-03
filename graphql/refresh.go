@@ -2,6 +2,7 @@ package graphql
 
 import (
 	"os"
+	"strings"
 	"time"
 
 	graphql "github.com/graph-gophers/graphql-go"
@@ -43,7 +44,11 @@ func (p *RefreshResponse) Description() string {
 }
 
 func (p *RefreshResponse) Hostname() (string, error) {
-	return os.Hostname()
+	it, err := os.Hostname()
+	if err != nil {
+		return "", nil
+	}
+	return strings.ToUpper(it), nil
 }
 func (p *RefreshResponse) CreatedAt() graphql.Time {
 	return graphql.Time{Time: time.Now()}

@@ -6,6 +6,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/BurntSushi/toml"
@@ -13,6 +14,7 @@ import (
 	"github.com/gorilla/mux"
 	"gorm.io/gorm"
 
+	"github.com/saturn-xiv/loquat/controllers"
 	graphql "github.com/saturn-xiv/loquat/graphql"
 	"github.com/saturn-xiv/loquat/models"
 )
@@ -46,6 +48,19 @@ func LaunchHttpServer(config_file string, port uint16, debug bool) error {
 	}
 	router := mux.NewRouter()
 	router.Handle("/graphql", graphql_hnd).Methods(http.MethodGet, http.MethodPost)
+	router.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		var buf strings.Builder
+		if err := controllers.Home(&buf); err != nil {
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			w.WriteHeader(http.StatusInternalServerError)
+			fmt.Fprintln(w, err.Error())
+			return
+		}
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintln(w, buf.String())
+
+	}).Methods(http.MethodGet)
 
 	router.Use(
 		// csrf.Protect(secret_key, csrf.Path("/")),

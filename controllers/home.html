@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <title>{{ .hostname }} - {{ .description }}</title>
+    <style>
+      body {
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100dvh;
+      }
+      .page-footer {
+        margin-top: auto;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>{{ .now }}</header>
+    <main>
+      <a href="/my/">Dashboard</a>
+      &nbsp;
+      <a href="/stream">Camera</a>
+    </main>
+    <footer class="page-footer">{{ .version }}</footer>
+  </body>
+</html>
