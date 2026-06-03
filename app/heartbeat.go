@@ -80,8 +80,10 @@ func Heartbeat(config_file string, host string, run bool, debug bool) error {
 		slog.Error("no wan networks")
 		return nil
 	}
+	slog.Info("active ethernet", "interfaces", slices.Sorted(maps.Keys(rt.Wan)))
 
 	if !apply {
+		slog.Info("nothing to do")
 		return nil
 	}
 	subject, body, err := build_heartbeat_email(status, rt)
