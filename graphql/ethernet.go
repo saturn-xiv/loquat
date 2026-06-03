@@ -48,6 +48,7 @@ func (p *Mutation) SetNetworkInterfacePublicStaticIp(ctx context.Context, args s
 	Isp      string
 	Dns      []string
 	Priority int32
+	Weight   int32
 }) (*Ok, error) {
 	user, ip, err := current_user(ctx, p.db, p.secrets)
 	if err != nil {
@@ -65,6 +66,7 @@ func (p *Mutation) SetNetworkInterfacePublicStaticIp(ctx context.Context, args s
 		profile.Dns = args.Dns
 		profile.Dhcp = false
 		profile.Priority = uint32(args.Priority)
+		profile.Weight = uint8(args.Weight)
 		profile.Enable = true
 		if err = models.SetB(tx, ethernetKey(args.Name), &profile); err != nil {
 			return err
@@ -83,6 +85,7 @@ func (p *Mutation) SetNetworkInterfacePublicDhcp(ctx context.Context, args struc
 	Isp      string
 	Memo     string
 	Priority int32
+	Weight   int32
 }) (*Ok, error) {
 	user, ip, err := current_user(ctx, p.db, p.secrets)
 	if err != nil {
@@ -95,6 +98,7 @@ func (p *Mutation) SetNetworkInterfacePublicDhcp(ctx context.Context, args struc
 		profile.Isp = args.Isp
 		profile.Dhcp = true
 		profile.Priority = uint32(args.Priority)
+		profile.Weight = uint8(args.Weight)
 		profile.Enable = true
 		if err = models.SetB(tx, ethernetKey(args.Name), &profile); err != nil {
 			return err
@@ -135,6 +139,7 @@ type StaticIp struct {
 	gateway  string
 	dns      []string
 	priority int32
+	weight   int32
 	enable   bool
 }
 
@@ -160,6 +165,9 @@ func (p *StaticIp) Isp() string {
 func (p *StaticIp) Priority() int32 {
 	return p.priority
 }
+func (p *StaticIp) Weight() int32 {
+	return p.weight
+}
 func (p *StaticIp) Memo() string {
 	return p.memo
 }
@@ -172,6 +180,7 @@ type DynamicIp struct {
 	memo     string
 	isp      string
 	priority int32
+	weight   int32
 	enable   bool
 }
 
@@ -190,6 +199,9 @@ func (p *DynamicIp) Memo() string {
 func (p *DynamicIp) Priority() int32 {
 	return p.priority
 }
+func (p *DynamicIp) Weight() int32 {
+	return p.weight
+}
 func (p *DynamicIp) Enable() bool {
 	return p.enable
 }
@@ -204,6 +216,7 @@ type ethernetProfile struct {
 	Label    string
 	Memo     string
 	Priority uint32
+	Weight   uint8
 	Enable   bool
 }
 
@@ -224,6 +237,7 @@ func (p *NetworkInterfaceProfile) ToStaticIp() (*StaticIp, bool) {
 		gateway:  p.item.Gateway,
 		dns:      p.item.Dns,
 		priority: int32(p.item.Priority),
+		weight:   int32(p.item.Weight),
 		enable:   p.item.Enable,
 	}, true
 
@@ -237,6 +251,7 @@ func (p *NetworkInterfaceProfile) ToDynamicIp() (*DynamicIp, bool) {
 		label:    p.item.Label,
 		memo:     p.item.Memo,
 		priority: int32(p.item.Priority),
+		weight:   int32(p.item.Weight),
 		enable:   p.item.Enable,
 	}, true
 

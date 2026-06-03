@@ -54,6 +54,7 @@ type Mutation {
     isp: Isp!
     memo: String!
     priority: Int!
+    weight: Int!
   ): Ok!
   setNetworkInterfacePublicStaticIp(
     name: String!
@@ -65,6 +66,7 @@ type Mutation {
     dns: [String!]!
     memo: String!
     priority: Int!
+    weight: Int!
   ): Ok!
   disableNetworkInterface(name: String!, label: String!): Ok!
 
