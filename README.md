@@ -7,6 +7,7 @@ curl -v -XPOST -d '{"query": "{ version }"}' http://127.0.0.1:8080/graphql
 curl -v -XPOST -d '{"query": "mutation { signOut{createdAt} }"}' http://127.0.0.1:8080/graphql
 
 sudo v4l2-ctl -d /dev/video0 --list-formats-ext
+sudo systemctl enable ustreamer@0.service
 ```
 
 ## Timer
@@ -27,6 +28,7 @@ systemctl list-timers --all
 - [Introduction to modern network load balancing and proxying](https://blog.envoyproxy.io/introduction-to-modern-network-load-balancing-and-proxying-a57f6ff80236)
 - [Equal Cost Multipath Load Sharing - Hardware ECMP](https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-44/Layer-3/Routing/Equal-Cost-Multipath-Load-Sharing-Hardware-ECMP/)
 - [IP Calculator](https://jodies.de/ipcalc)
+- [µStreamer](https://github.com/pikvm/ustreamer/issues/16#issuecomment-582733736)
 
 ### Emails
 

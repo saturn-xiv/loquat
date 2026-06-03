@@ -56,6 +56,12 @@ fi
 
 echo "root:$(pwgen 32 1)" | chpasswd
 
+if ! getent passwd "ustreamer" > /dev/null 2>&1; then
+    useradd -r ustreamer
+    usermod -a -G video ustreamer
+fi
+
+
 # https://www.gnu.org/software/grub/manual/grub/html_node/Serial-terminal.html
 # dmesg | grep tty
 # cat /proc/tty/driver/serial
