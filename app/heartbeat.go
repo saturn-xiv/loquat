@@ -33,10 +33,7 @@ type HeartbeatConfig struct {
 	Smtp           mail.Config `toml:"smtp"`
 }
 
-func Heartbeat(config_file string, host string, run bool, debug bool) error {
-	if len(host) == 0 {
-		return errors.New("empty target host")
-	}
+func Heartbeat(config_file string, run bool, debug bool) error {
 	slog.Debug("load configuration from", "file", config_file)
 	var config HeartbeatConfig
 
@@ -54,11 +51,12 @@ func Heartbeat(config_file string, host string, run bool, debug bool) error {
 		return err
 	}
 	if rt.Wan == nil {
+		slog.Warn("no wan devices")
 		return nil
 	}
 	var apply = false
 
-	status := NewEthernetHeartbeatStatus(host, slices.Collect(maps.Keys(rt.Wan))...)
+	status := NewEthernetHeartbeatStatus(slices.Collect(maps.Keys(rt.Wan))...)
 	{
 		key := "ethernet.heartbeats"
 
@@ -80,7 +78,6 @@ func Heartbeat(config_file string, host string, run bool, debug bool) error {
 		slog.Error("no wan networks")
 		return nil
 	}
-	slog.Info("active ethernet", "interfaces", slices.Sorted(maps.Keys(rt.Wan)))
 
 	if !apply {
 		slog.Info("nothing to do")
@@ -95,6 +92,10 @@ func Heartbeat(config_file string, host string, run bool, debug bool) error {
 			delete(rt.Wan, name)
 		}
 	}
+	if len(status.Items) == 0 {
+		return errors.New("no active internets")
+	}
+	slog.Info("current active internets", "interfaces", slices.Sorted(maps.Keys(rt.Wan)))
 	{
 		tmp := filepath.Join(os.TempDir(), fmt.Sprintf("route-%s.sh", time.Now().Format("20060102150405")))
 		if err := render_ecmp_file(tmp, rt.Wan); err != nil {
@@ -142,13 +143,13 @@ func (p *EthernetHeartbeatStatus) Ok() bool {
 	return true
 }
 
-func NewEthernetHeartbeatStatus(host string, devices ...string) *EthernetHeartbeatStatus {
+func NewEthernetHeartbeatStatus(devices ...string) *EthernetHeartbeatStatus {
 	var res = EthernetHeartbeatStatus{
 		Items:     make(map[string]bool),
 		CreatedAt: time.Now(),
 	}
 	for _, device := range devices {
-		_, err := router.Ping(device, host)
+		err := router.Ncsi(device)
 		if err != nil {
 			slog.Error(err.Error())
 		}

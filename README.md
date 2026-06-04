@@ -29,6 +29,7 @@ systemctl list-timers --all
 - [Equal Cost Multipath Load Sharing - Hardware ECMP](https://docs.nvidia.com/networking-ethernet-software/cumulus-linux-44/Layer-3/Routing/Equal-Cost-Multipath-Load-Sharing-Hardware-ECMP/)
 - [IP Calculator](https://jodies.de/ipcalc)
 - [µStreamer](https://github.com/pikvm/ustreamer/issues/16#issuecomment-582733736)
+- [NCSI network probe](https://learn.microsoft.com/en-us/windows-server/networking/ncsi/ncsi-frequently-asked-questions#where-is-the-http-web-probe-server-path-found-in-the-registry)
 
 ### Emails
 
