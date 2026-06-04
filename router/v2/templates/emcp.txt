@@ -2,6 +2,7 @@
 
 set -e
 
-ip route replace default scope global {{ range $dev, $eth := . }} nexthop via {{ $eth.ip }} dev {{ $dev }} weight {{ $eth.weight }} {{ end }}
+ip route replace default scope global {{ range $dev, $eth := . }} nexthop via $(ip route show dev {{ $dev }} | awk '/default/ {print $3}') dev {{ $dev }} weight {{ $eth.weight }} {{ end }}
 
+echo 'done.'
 exit 0

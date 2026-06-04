@@ -1,5 +1,4 @@
 # https://firewalld.org/documentation/howto/enable-and-disable-firewalld.html
-echo 'enable ipv4 forward'
 cat >/etc/sysctl.d/100-router.conf <<EOF
 net.ipv4.ip_forward = 1
 
