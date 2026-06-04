@@ -331,6 +331,8 @@ type Pagination {
 }
 
 type RefreshResponse {
+  id: String!
+  uptime: String!
   version: String!
   hostname: String!
   description: String!

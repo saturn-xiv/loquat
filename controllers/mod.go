@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/saturn-xiv/loquat/env"
+	"github.com/saturn-xiv/loquat/router"
 )
 
 //go:embed home.html
@@ -18,6 +19,14 @@ func Home(wrt io.Writer) error {
 	home, err := os.Hostname()
 	if err != nil {
 		return nil
+	}
+	id, err := router.Id()
+	if err != nil {
+		return err
+	}
+	uptime, err := router.Uptime()
+	if err != nil {
+		return err
 	}
 
 	tpl, err := template.New("").Parse(gl_home_html)
@@ -29,5 +38,7 @@ func Home(wrt io.Writer) error {
 		"now":         time.Now().Format(time.UnixDate),
 		"description": env.Description(),
 		"version":     env.Version(),
+		"id":          id,
+		"uptime":      uptime.String(),
 	})
 }

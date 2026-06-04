@@ -39,7 +39,7 @@
                 <a class="nav-link" href="/my/">Dashboard</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/stream-0">Camera</a>
+                <a class="nav-link" href="/stream">Camera</a>
               </li>
             </ul>
           </div>
@@ -47,9 +47,17 @@
       </nav>
     </header>
     <main>
-      <div class="container" style="margin-bottom: 4rem"></div>
+      <div class="container" style="margin-top: 3rem; margin-bottom: 4rem">
+        <div class="row justify-content-start">
+          <div class="col-md-12">
+            <h1>{{ .uptime }} up</h1>
+            <hr />
+            <p class="lead">ID: {{ .id }}</p>
+          </div>
+        </div>
+      </div>
       <footer class="container">
-        <p class="float-end">{{ .now }}</p>
+        <p class="float-end">Current: {{ .now }}</p>
         <p>
           &copy; 2026 {{ .version }} The source code is licensed &nbsp;
           <a target="_blank" href="https://opensource.org/license/mit"> MIT </a>

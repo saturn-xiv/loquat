@@ -10,6 +10,7 @@ import (
 
 	"github.com/saturn-xiv/loquat/env"
 	"github.com/saturn-xiv/loquat/models"
+	"github.com/saturn-xiv/loquat/router"
 )
 
 var (
@@ -43,6 +44,21 @@ func (p *RefreshResponse) Description() string {
 	return env.Description()
 }
 
+func (p *RefreshResponse) Id() (string, error) {
+	it, err := router.Id()
+	if err != nil {
+		return "", nil
+	}
+	return it, nil
+}
+
+func (p *RefreshResponse) Uptime() (string, error) {
+	it, err := router.Uptime()
+	if err != nil {
+		return "", nil
+	}
+	return it.String(), nil
+}
 func (p *RefreshResponse) Hostname() (string, error) {
 	it, err := os.Hostname()
 	if err != nil {

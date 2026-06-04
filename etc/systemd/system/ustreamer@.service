@@ -1,0 +1,10 @@
+[Unit]
+Description=uStreamer service
+After=network.target
+[Service]
+Environment="SCRIPT_ARGS=%I"
+User=ustreamer
+ExecStart=/usr/bin/ustreamer --process-name-prefix streamer-%I --log-level=0 --device=/dev/video%I --device-timeout=8 --quality=100 --resolution=1920x1080 --desired-fps=30 --host=127.0.0.1 --port=880%I
+
+[Install]
+WantedBy=multi-user.target
