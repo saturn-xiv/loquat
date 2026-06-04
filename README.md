@@ -7,7 +7,13 @@ curl -v -XPOST -d '{"query": "{ version }"}' http://127.0.0.1:8080/graphql
 curl -v -XPOST -d '{"query": "mutation { signOut{createdAt} }"}' http://127.0.0.1:8080/graphql
 
 sudo v4l2-ctl -d /dev/video0 --list-formats-ext
+sudo v4l2-ctl -d /dev/video0 --list-ctrls
 sudo systemctl enable ustreamer@0.service
+
+uptime -s
+last reboot
+journalctl --list-boots
+journalctl -b -1 -n 100
 ```
 
 ## Timer
