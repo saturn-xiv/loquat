@@ -15,7 +15,7 @@ fi
 
 apt update
 apt upgrade -y
-apt install -y sudo vim tmux pwgen curl bc psmisc htop btop \
+apt install -y sudo vim tmux pwgen curl bc psmisc htop btop socat \
     ustreamer v4l-utils ffmpeg \
     dnsmasq geoip-bin geoip-database inotify-tools watchman \
     bridge-utils net-tools inetutils-tools sysstat lshw iftop nload nethogs nmap lm-sensors masscan iputils-tracepath netplan.io firewalld systemd-resolved acpid \
